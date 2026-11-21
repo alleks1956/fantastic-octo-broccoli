@@ -1,31 +1,4 @@
-import os
-import queue
-import threading
-import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
 
-from PIL import Image, ImageEnhance, ImageOps, ImageTk
-
-# Совместимость со старыми версиями Pillow (< 9.1)
-RESAMPLE = getattr(Image, "Resampling", Image).LANCZOS
-
-VALID_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".bmp")
-MAX_SIZE = 20000          # верхняя граница ширины/высоты при обрезке
-PREVIEW_SRC_MAX = 1000    # предпросмотр считается на уменьшенной копии
-PREVIEW_BG = (234, 234, 234)
-
-MODES = [
-    "Масштабировать и обрезать (Ш x В)",
-    "По соотношению сторон (без сжатия)",
-    "Точный вырез по центру (Ш x В)",
-]
-
-
-# ---------------------------------------------------------------- обработка
-
-def parse_ratio(text):
-    """'16:9' -> 1.777...; при ошибке ValueError."""
-    try:
         rw, rh = (float(x) for x in text.split(":"))
     except ValueError:
         raise ValueError("Пропорции должны быть в формате «16:9»")
